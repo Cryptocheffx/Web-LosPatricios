@@ -1,47 +1,49 @@
 import type { Metadata, Viewport } from "next";
+import CartDrawer from "./cart-drawer";
 import "./globals.css";
+import SiteFooter from "./site-footer";
+import SiteHeader from "./site-header";
+import { StoreProvider } from "./store-context";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-const socialImage = {
-  url: "/images/presentacion-magret.jpeg",
-  width: 554,
-  height: 554,
-  alt: "Magret de pato servido en la mesa",
-};
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
 
 export const metadata: Metadata = {
   ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   title: {
-    default: "Los Patricios | Pato y Foie Gras",
+    default: "Los Patricios | Carne de pato y Foie Gras",
     template: "%s | Los Patricios",
   },
   description:
-    "Descubre la selección de pato de Los Patricios: Foie Gras, magret, muslo y pierna de pato para disfrutar en cada ocasión.",
+    "Explora la selección de pato de Los Patricios: Foie Gras, magret, pierna y machón. Solicita información sobre precio y presentación.",
   applicationName: "Los Patricios",
   keywords: [
     "Los Patricios",
-    "Foie Gras",
+    "Foie Gras de pato",
     "carne de pato",
     "magret de pato",
-    "muslo de pato",
     "pierna de pato",
-    "delicatessen",
+    "machón de pato",
+    "tienda de pato",
   ],
   openGraph: {
-    title: "Los Patricios | Pato y Foie Gras",
+    title: "Tienda de pato y Foie Gras | Los Patricios",
     description:
-      "Una selección de pato y delicatessen para cocinar, compartir y celebrar.",
+      "Explora nuestra tienda de pato: Foie Gras, magret, pierna y machón.",
     siteName: "Los Patricios",
     locale: "es",
     type: "website",
-    ...(siteUrl ? { images: [socialImage] } : {}),
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Los Patricios | Pato y Foie Gras",
-    description:
-      "Una selección de pato y delicatessen para cocinar, compartir y celebrar.",
-    ...(siteUrl ? { images: [socialImage.url] } : {}),
+    ...(siteUrl
+      ? {
+          images: [
+            {
+              url: "/images/presentacion-magret.jpeg",
+              width: 554,
+              height: 554,
+              alt: "Magret de pato preparado para servir",
+            },
+          ],
+        }
+      : {}),
   },
   robots: {
     index: true,
@@ -62,7 +64,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f7f3ed",
+  themeColor: "#f7f5f1",
 };
 
 const organizationSchema = {
@@ -70,9 +72,9 @@ const organizationSchema = {
   "@type": "Organization",
   name: "Los Patricios",
   description:
-    "Selección de productos de pato y delicatessen, con Foie Gras como producto destacado.",
+    "Tienda de pato con Foie Gras, magret, pierna y machón de pato.",
   ...(siteUrl
-    ? { logo: `${siteUrl.replace(/\/$/, "")}/logo-los-patricios.png` }
+    ? { logo: `${siteUrl}/logo-los-patricios.png`, url: siteUrl }
     : {}),
 };
 
@@ -82,13 +84,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" data-scroll-behavior="smooth">
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c"),
+          }}
         />
-        {children}
+        <StoreProvider>
+          <SiteHeader />
+          <main className="site-main">{children}</main>
+          <SiteFooter />
+          <CartDrawer />
+        </StoreProvider>
       </body>
     </html>
   );

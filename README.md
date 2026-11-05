@@ -1,34 +1,59 @@
 # Los Patricios
 
-Sitio web responsive de productos de pato y Foie Gras construido con Next.js App Router.
+Sitio profesional y responsive de Los Patricios construido con **Node.js,
+Next.js App Router, TypeScript y Yarn**. Incluye páginas independientes de
+Inicio, Tienda, About y Contacto, además de las fichas individuales de Foie
+Gras, magret, pierna y machón de pato.
 
 ## Requisitos
 
 - Node.js 20.9 o posterior
+- Yarn Classic 1.22.22
 
-## Instalación
+El proyecto fija Yarn en `package.json`; Corepack lo activa automáticamente
+con `corepack yarn`.
 
-```bash
-npm install
-```
-
-## Desarrollo
+## Primer inicio
 
 ```bash
-npm run dev
+corepack yarn install
+corepack yarn dev
 ```
+
+Abre http://localhost:3000 para ver Inicio. Desde la navegación puedes ir a la
+tienda, conocer la empresa o enviar una consulta. Si ya tienes Yarn instalado,
+puedes ejecutar `yarn install` y `yarn dev`.
 
 ## Comprobaciones y producción
 
 ```bash
-npm run typecheck
-npm run build
-npm run start
+corepack yarn typecheck
+corepack yarn build
+corepack yarn start
 ```
 
-Para publicar el dominio en metadatos, compartir una imagen social y generar un
-sitemap con URL absoluta, define `NEXT_PUBLIC_SITE_URL` (por ejemplo,
-`https://tudominio.com`). Para verificar el dominio en Google Search Console, define también
-`GOOGLE_SITE_VERIFICATION` con el token proporcionado por Google.
+## Catálogo y pedidos
 
-Las imágenes de marca y producto se encuentran en `public/`.
+- Busca productos, filtra por sus categorías, ordena los resultados y abre las
+  fichas individuales en la página Tienda.
+- Añade unidades al carrito, cambia cantidades y vuelve a abrir la tienda: el
+  carrito permanece guardado en el dispositivo.
+- Envía una solicitud de cotización desde el carrito directamente al WhatsApp
+  de Los Patricios. La página de contacto también permite enviar consultas al
+  WhatsApp o al correo de ventas.
+- El Inicio cuenta con un carrusel de tres fotografías, productos destacados y
+  enlaces a la tienda, About y Contacto.
+- Las solicitudes no procesan pagos y no guardan datos personales; falta
+  configurar precios y presentaciones comerciales para habilitar un cobro real.
+
+## Configuración
+
+Duplica `.env.example` como `.env.local` y define los valores que tengas:
+
+- `NEXT_PUBLIC_SITE_URL`: dominio público con `https://`; se usa en los
+  metadatos y en el sitemap de Google.
+- `GOOGLE_SITE_VERIFICATION`: token que entrega Google Search Console.
+
+El teléfono y correo oficiales se comparten entre el encabezado, carrito y
+página de Contacto desde `lib/contact-info.ts`. Las imágenes de marca y
+producto están en `public/`.
